@@ -54,11 +54,11 @@ def animate_rect(Window, canvas,xmove):
     Max_bar = 100
     
 
-    colnum = 100    
+    colnum = 100  
     colwidth = 980 / (colnum * 2)
     colbetween = colwidth + colwidth 
     
-    x1pos = 10 
+    x1pos = 10
     despos.append(x1pos)
     for i in range(0,colnum + 1):
         
@@ -87,7 +87,8 @@ def animate_rect(Window, canvas,xmove):
                 canvas.update()
                 v +=1 
             elif z == 10 + Inc_bar:
-                
+                l = tkinter.Label(canvas, text = val, font =("Courier", 8))
+                l.place(x = x1, y = y1)
                 break
                 
 
