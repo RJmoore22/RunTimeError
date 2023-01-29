@@ -9,15 +9,15 @@ PYTHONUNBUFFERED="yes"
 
 TK_SILENCE_DEPRECATION=1
 
-Window_Width=1000
+Window_Width=700
 Window_Height=500
-line_width = 980
+line_width = Window_Width - 20
 
 
 
 rect_min_movement = 5
-Refresh_Sec = 0.00000000001
-Refresh_Sec2 = .001
+Refresh_Sec = .00001
+Refresh_Sec2 =.001
 rectx1 = 10
 
 rectx2 = rectx1 + 10
@@ -38,7 +38,7 @@ def create_animation_canvas(Window):
     canvas = tkinter.Canvas(Window)
     canvas.configure(bg="white")
     canvas.pack(fill="both", expand=True)
-    canvas.create_line(10,basey,990,470) 
+    canvas.create_line(8,basey,Window_Width - 10,470) 
                     
     return canvas
  
@@ -53,25 +53,30 @@ def animate_rect(Window, canvas,xmove):
     # Change Max_bar to change the max number of columns being made
     Max_bar = 100
     
-
-    colnum = 100  
-    colwidth = 980 / (colnum * 2)
-    colbetween = colwidth + colwidth 
+    
+    colnum = 97
+    #colwidth = 5
+    colwidth = round(((Window_Width - 18) / colnum)-2)
+    colbetween = colwidth + 2
     
     x1pos = 10
     despos.append(x1pos)
-    for i in range(0,colnum + 1):
+    xstart = 10
+    for i in range(0,colnum):
         
         color = "#%03x" % random.randint(0, 0xFFF)
         x2pos= x1pos + colwidth
         y2pos = random.randint(10,450)
-        rect = canvas.create_rectangle(10,basey,20, y2pos, fill = color)
+        rect = canvas.create_rectangle(xstart-(colbetween * 3),basey,xstart-(colbetween * 3)+colwidth, y2pos, fill = color, outline = "")
         x1pos += colbetween
         val = basey - y2pos
         yval.append(val)
         despos.append(x1pos)
         print (len(yval), len(despos))
-        Inc_bar += 12
+        if i == 0:
+            Inc_bar = 10
+        else:
+            Inc_bar += colbetween
         while True:
             canvas.move(rect,1,0)
             Window.update()
@@ -83,16 +88,20 @@ def animate_rect(Window, canvas,xmove):
             
             if x1 >= z:
                 rect = canvas.create_rectangle(x1,y1,x2, y2, fill = color)
-                canvas.coords(rect, 10,basey,20, y2pos)
+                canvas.coords(rect, x1,basey,x2, y2pos)
                 canvas.update()
                 v +=1 
-            elif z == 10 + Inc_bar:
+            elif z == Inc_bar:
                 l = tkinter.Label(canvas, text = val, font =("Courier", 8))
                 l.place(x = x1, y = y1)
+                xstart += colbetween 
                 break
                 
-
+        
     print(yval)
+    
+        
+    time.sleep(5)
 Animation_Window = create_animation_window()
 Animation_canvas = create_animation_canvas(Animation_Window)
 animate_rect(Animation_Window,Animation_canvas, rect_min_movement)
