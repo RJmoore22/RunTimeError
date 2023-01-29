@@ -16,8 +16,8 @@ line_width = Window_Width - 20
 
 
 rect_min_movement = 5
-Refresh_Sec = .00001
-Refresh_Sec2 =.001
+Refresh_Sec = .000001
+Refresh_Sec2 =.000001
 rectx1 = 10
 
 rectx2 = rectx1 + 10
@@ -54,7 +54,8 @@ def animate_rect(Window, canvas,xmove):
     Max_bar = 100
     
     
-    colnum = 97
+    colnum = 68
+
     #colwidth = 5
     colwidth = round(((Window_Width - 18) / colnum)-2)
     colbetween = colwidth + 2
@@ -63,11 +64,12 @@ def animate_rect(Window, canvas,xmove):
     despos.append(x1pos)
     xstart = 10
     for i in range(0,colnum):
-        
+        delay = 4
         color = "#%03x" % random.randint(0, 0xFFF)
+        color2 = "#386e6b"
         x2pos= x1pos + colwidth
         y2pos = random.randint(10,450)
-        rect = canvas.create_rectangle(xstart-(colbetween * 3),basey,xstart-(colbetween * 3)+colwidth, y2pos, fill = color, outline = "")
+        rect = canvas.create_rectangle(xstart-(colbetween * delay),basey,xstart-(colbetween * delay)+colwidth, y2pos, fill = color2, outline = "")
         x1pos += colbetween
         val = basey - y2pos
         yval.append(val)
@@ -92,8 +94,8 @@ def animate_rect(Window, canvas,xmove):
                 canvas.update()
                 v +=1 
             elif z == Inc_bar:
-                l = tkinter.Label(canvas, text = val, font =("Courier", 8))
-                l.place(x = x1, y = y1)
+                canvas.create_text((x1 + 4, y1 - 4), text=val,font = "MSGothic 6 bold")
+                
                 xstart += colbetween 
                 break
                 
