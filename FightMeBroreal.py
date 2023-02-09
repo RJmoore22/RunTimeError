@@ -32,6 +32,7 @@ colnum = 102
 colwidth = round(((Window_Width - 18) / colnum)-2)
 colbetween = colwidth + 2
 def animate_rect():
+    
     objects.clear()
     yval.clear()
     canvas.delete('all')
@@ -90,7 +91,8 @@ def animate_rect():
     #print(despos)
 
      
-def bubbleSort(yval):    
+def bubbleSort(yval): 
+    tic = time.perf_counter()   
     n = len(yval)  
     
     # Traverse through all array elements
@@ -110,15 +112,9 @@ def bubbleSort(yval):
                     canvas.update()
                     objects[j], objects[j+1] = objects[j+1], objects[j]
                     break
-    #traverse through the sorted array and check for errors
-    for i in range(n-1):
-        for j in range(i+1, n):
-            if yval[i] > yval[j]:
-                errorCounter +1
-    if errorCounter > 0 :
-        print("not sorted correctly")
-    else: 
-        print ("sorted correctly")
+    toc = time.perf_counter()
+
+    canvas.create_text(Window_Width / 2, 20, text=f"{toc-tic:0.3f} seconds ", fill = "white")
 
 
 
@@ -149,6 +145,7 @@ btn = tkinter.Button(UI_frame, text = 'Sort', bd = '5',
                           command =lambda: bubbleSort(yval))
 
 btn.pack(side = 'right')
+
 
 
 Window.mainloop()
