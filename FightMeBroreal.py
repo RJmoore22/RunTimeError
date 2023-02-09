@@ -10,7 +10,7 @@ PYTHONUNBUFFERED="yes"
 
 TK_SILENCE_DEPRECATION=1
 
-Window_Width=830
+Window_Width=1000
 Window_Height=670
 line_width = Window_Width - 20
 rect_min_movement = 5
@@ -27,10 +27,16 @@ names = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine',
 errorCounter = 0
 objects = []
 
-colnum = 102
+colnum = 950
 
 colwidth = round(((Window_Width - 18) / colnum)-2)
 colbetween = colwidth + 2
+timex = 0
+
+#timex = 0 for fast or 1 for slow 
+timex = 0
+
+
 def animate_rect():
     
     objects.clear()
@@ -51,7 +57,7 @@ def animate_rect():
         color2 = "#386e6b"
         #x2pos= x1pos + colwidth
         y2pos = random.randint(10,570)
-        rect = canvas.create_rectangle(xstart-(colbetween * delay),basey,xstart-(colbetween * delay)+colwidth, y2pos, fill = color2, outline = "")
+        rect = canvas.create_rectangle(xstart-(colbetween * delay),basey,xstart-(colbetween * delay)+colwidth, y2pos, fill = color, outline = "")
         objects.append(rect)
         
         x1pos += colbetween
@@ -65,9 +71,10 @@ def animate_rect():
             Inc_bar += colbetween
         while True:
             
-            canvas.move(rect,1,0)
-            canvas.update()
-            time.sleep(Refresh_Sec)
+            canvas.move(rect,colbetween,0)
+            if timex == 1:
+                canvas.update()
+                time.sleep(Refresh_Sec)
             rect_pos = canvas.coords(rect)
             
             # unpack array to variables
@@ -109,13 +116,12 @@ def bubbleSort(yval):
                 while True:
                     canvas.move(objects[j],colbetween, 0)
                     canvas.move(objects[j+1],-colbetween, 0)
-                    canvas.update()
+                    #canvas.update()
                     objects[j], objects[j+1] = objects[j+1], objects[j]
                     break
     toc = time.perf_counter()
 
     canvas.create_text(Window_Width / 2, 20, text=f"{toc-tic:0.3f} seconds ", fill = "white")
-
 
 
 
@@ -128,8 +134,8 @@ Window.attributes("-topmost", True)
 
 
     
-UI_frame = tkinter.Frame(Window, background = 'black')
-UI_frame.grid(row=0, column=0)
+UI_frame = tkinter.Frame(Window, background = 'black', border = 30)
+UI_frame.grid(row=0, column=0, padx = 0, pady = 0)
 
 #animation canvas config
 canvas = tkinter.Canvas(UI_frame)
@@ -137,11 +143,11 @@ canvas.configure(bg="black",width=Window_Width, height=600)
 canvas.pack(fill="both", expand=True)
 
 
-btn = tkinter.Button(UI_frame, text = 'Create', bd = '5',
+btn = tkinter.Button(UI_frame, text = 'Create',bd = 5,
                           command = animate_rect)
 btn.pack(side = 'left')
 
-btn = tkinter.Button(UI_frame, text = 'Sort', bd = '5',
+btn = tkinter.Button(UI_frame, text = 'Sort',bd = 5,
                           command =lambda: bubbleSort(yval))
 
 btn.pack(side = 'right')
