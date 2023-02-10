@@ -10,15 +10,15 @@ PYTHONUNBUFFERED="yes"
 
 TK_SILENCE_DEPRECATION=1
 
-Window_Width=1000
-Window_Height=670
+Window_Width=1600
+Window_Height=800
 line_width = Window_Width - 20
 rect_min_movement = 5
 Refresh_Sec = .000001
 Refresh_Sec2 =.000001
 rectx1 = 10
 rectx2 = rectx1 + 10
-basey = 590
+basey = Window_Height - 10
 
 #creating an empty array list 
 yval = []
@@ -27,16 +27,24 @@ names = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine',
 errorCounter = 0
 objects = []
 
-colnum = 950
+colnum = 525
 
 colwidth = round(((Window_Width - 18) / colnum)-2)
 colbetween = colwidth + 2
-timex = 0
 
 #timex = 0 for fast or 1 for slow 
-timex = 0
 
+def fast():
+    global timex
+    timex = 0
+    bubbleSort(yval)
 
+def cool():
+    global timex
+    timex = 1
+    bubbleSort(yval)
+
+color2 = "#386e6b"
 def animate_rect():
     
     objects.clear()
@@ -56,8 +64,8 @@ def animate_rect():
         color = "#%03x" % random.randint(0, 0xFFF)
         color2 = "#386e6b"
         #x2pos= x1pos + colwidth
-        y2pos = random.randint(10,570)
-        rect = canvas.create_rectangle(xstart-(colbetween * delay),basey,xstart-(colbetween * delay)+colwidth, y2pos, fill = color, outline = "")
+        y2pos = random.randint(10,basey - 10)
+        rect = canvas.create_rectangle(xstart-(colbetween * delay),basey,xstart-(colbetween * delay)+colwidth, y2pos, fill = color2, outline = "")
         objects.append(rect)
         
         x1pos += colbetween
@@ -70,24 +78,23 @@ def animate_rect():
         else:
             Inc_bar += colbetween
         while True:
-            
+            #canvas.config(objects[i], fill = 'red')
             canvas.move(rect,colbetween,0)
-            if timex == 1:
-                canvas.update()
-                time.sleep(Refresh_Sec)
+            #canvas.update()
+            #time.sleep(Refresh_Sec)
             rect_pos = canvas.coords(rect)
-            
             # unpack array to variables
             x1,y1,x2,y2 = rect_pos
             despos.append(x1)
             z = x1 
             if z == Inc_bar:
                 xstart += colbetween 
-                
                 break
-        
-    canvas.config(min(str(objects)),fill = 'red')
-    canvas.config(max(str(objects)),fill = 'red')
+    lowest = yval.index(min(yval))
+    highest = yval.index(max(yval))
+    canvas.itemconfig(objects[lowest],fill = 'red')
+    canvas.itemconfig(objects[highest],fill = 'red')
+    canvas.update()
     print (objects)
     print (len(objects))
     print (yval)
@@ -104,7 +111,8 @@ def bubbleSort(yval):
     
     # Traverse through all array elements
     for i in range(0,n-1):
- 
+        if timex == 1:
+            canvas.update()
         # Last i elements are already in place
         for j in range(n-1):
  
@@ -114,11 +122,12 @@ def bubbleSort(yval):
             if yval[j] > yval[j + 1]:
                 yval[j], yval[j+1] = yval[j+1], yval[j]
                 while True:
+                    
                     canvas.move(objects[j],colbetween, 0)
                     canvas.move(objects[j+1],-colbetween, 0)
-                    #canvas.update()
                     objects[j], objects[j+1] = objects[j+1], objects[j]
                     break
+
     toc = time.perf_counter()
 
     canvas.create_text(Window_Width / 2, 20, text=f"{toc-tic:0.3f} seconds ", fill = "white")
@@ -139,19 +148,18 @@ UI_frame.grid(row=0, column=0, padx = 0, pady = 0)
 
 #animation canvas config
 canvas = tkinter.Canvas(UI_frame)
-canvas.configure(bg="black",width=Window_Width, height=600)
+canvas.configure(bg="black",width=Window_Width, height=Window_Height)
 canvas.pack(fill="both", expand=True)
 
 
-btn = tkinter.Button(UI_frame, text = 'Create',bd = 5,
-                          command = animate_rect)
+btn = tkinter.Button(UI_frame, text = 'Create',bd = 5,command = animate_rect)
 btn.pack(side = 'left')
 
-btn = tkinter.Button(UI_frame, text = 'Sort',bd = 5,
-                          command =lambda: bubbleSort(yval))
-
+btn = tkinter.Button(UI_frame, text = 'Cool Sort',bd = 5,command =lambda: cool())
 btn.pack(side = 'right')
 
+btn = tkinter.Button(UI_frame, text = 'Fast Sort',bd = 5,command =lambda: fast())
+btn.pack(side = 'right')
 
 
 Window.mainloop()
