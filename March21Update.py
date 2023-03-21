@@ -26,7 +26,7 @@ objects = []
 
 
 
-colnum = 220
+colnum = 222
 
 
 
@@ -134,7 +134,6 @@ def insertionSort(yval):
     tracemalloc.start()
     st = time.perf_counter()
     n = len(yval)
-
     for i in range(1, n):
         k = yval[i]
         j = i - 1
@@ -206,10 +205,13 @@ def partition(yval, start, end):
     pivot = yval[end]
     canvas.itemconfig(objects[end], fill = "Green")
     canvas.update()
+    canvas.itemconfig(objects[start], fill = "Blue")
+    canvas.update()
     i = start -1
 
     for j in range(start, end):
         if yval[j] <= pivot:
+
             i = i + 1
             yval[i], yval[j] = yval[j], yval[i]
             
@@ -218,14 +220,18 @@ def partition(yval, start, end):
             objects[i], objects[j] = objects[j], objects[i]
             canvas.update()
 
-        
 
+
+        
+    canvas.itemconfig(objects[end], fill = color2)
+    canvas.update()
+    canvas.itemconfig(objects[j], fill = color2)
+    canvas.update()
     yval[i + 1], yval[end] = yval[end], yval[i + 1]
     canvas.move(objects[i+1],colbetween * (end - (i+1)), 0)
     canvas.move(objects[end],-colbetween * (end - (i+1)), 0)
     objects[i+1], objects[end] = objects[end], objects[i+1]
     canvas.update()
-
     return i + 1
     
     
@@ -259,36 +265,19 @@ canvas.configure(bg="white",width=Window_Width, height=Window_Height)
 canvas.pack(fill="both", expand=True)
 
 
-btn = tkinter.Button(UI_frame, text = 'Shuffle',bd = 5,command = lambda: [animate_rect(), animate_rect(), animate_rect(), animate_rect(),animate_rect(), animate_rect(), animate_rect(), animate_rect()])
+btn = tkinter.Button(UI_frame, text = 'Shuffle',bd = 5,command = lambda: [animate_rect(),animate_rect(),animate_rect(),animate_rect(),animate_rect(),animate_rect(),animate_rect(), animate_rect(), animate_rect(), animate_rect(),animate_rect(), animate_rect(), animate_rect(), animate_rect()])
 btn.pack(side = 'left')
 
+btn = tkinter.Button(UI_frame, text = 'Bubble',bd = 5,command = lambda: Bubble())
+btn.pack(side = 'right')
 
-def selected ():
-    if clicked.get() == 'Bubble':
-        Bubble()
-    if clicked.get() == 'Insertion':
-        insertionSort(yval)
-    if clicked.get() == 'Merge':
-        mergeSort(yval)
-    if clicked.get() == 'Quick':
-        quickSort(yval, 0, len(yval) - 1 )
+btn = tkinter.Button(UI_frame, text = 'Insertion',bd = 5,command = lambda: insertionSort(yval))
+btn.pack(side = 'right')
 
-options = [ 
-    "Bubble" , 
-    "Insertion", 
-    "Merge",
-    "Quick",
-]
+btn = tkinter.Button(UI_frame, text = 'Merge',bd = 5,command = lambda: mergeSort(yval))
+btn.pack(side = 'right')
 
-
-
-clicked  = tkinter.StringVar()
-clicked.set(options[0])
-
-btn = tkinter.OptionMenu(UI_frame, clicked ,*options)
-btn.pack(side='left')
-
-btn = tkinter.Button(UI_frame, text = 'Select',bd = 5,command = selected)
-btn.pack(side = 'left')
+btn = tkinter.Button(UI_frame, text = 'Quick',bd = 5,command = lambda: quickSort(yval, 0, len(yval) - 1))
+btn.pack(side = 'right')
 
 Window.mainloop()
