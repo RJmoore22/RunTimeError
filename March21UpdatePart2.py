@@ -145,7 +145,7 @@ def insertionSort(yval):
             objects[j], objects[j+1] = objects[j+1], objects[j]
             j -= 1
         yval[j + 1] = k
-        
+    
     #print(yval)
     et = time.perf_counter()
     canvas.create_text(Window_Width / 2, 40, text=f"Traced Memory (Current, Peak): {tracemalloc.get_traced_memory()} bytes ", fill = "black")
@@ -153,8 +153,7 @@ def insertionSort(yval):
     tracemalloc.stop()
 
 def mergeSort(yval,despos,objects):
-    print(len(yval))
-    print(len(despos))
+
     if len(yval) > 1:
          # Finding the mid of the array
         mid = len(yval)//2
@@ -173,34 +172,40 @@ def mergeSort(yval,despos,objects):
         i = j = k = 0
         # Copy data to temp arrays L[] and R[]
         while i < len(L) and j < len(R):
-            if L[i] >= R[j]:     
+            if L[i] >= R[j]: 
                 yval[k] = L[i]
-                despos[k] = L2[i]
                 objects[k] = L3[i]
-                canvas.delete(objects[k])
-                objects[k] = canvas.create_rectangle(despos[i],basey,despos[k] + colwidth, yval[k], fill = color2, outline = "")
+                canvas.delete(objects[k])    
+                objects[k] = canvas.create_rectangle(despos[k],basey,despos[k] + colwidth, yval[k], fill = color2, outline = "")
                 canvas.update()
                 i += 1
             else:
                 yval[k] = R[j]
-                despos[k] = R2[j]
                 objects[k] = R3[j]
                 canvas.delete(objects[k])
-                objects[k] = canvas.create_rectangle(despos[j],basey,despos[k] + colwidth, yval[k], fill = color2, outline = "")
+                objects[k] = canvas.create_rectangle(despos[k],basey,despos[k] + colwidth, yval[k], fill = color2, outline = "")
                 canvas.update()
                 j += 1
             k += 1
         # Checking if any element was left
         while i < len(L):
             yval[k] = L[i]
+            objects[k] = L3[i]
+            canvas.delete(objects[k])
+            objects[k] = canvas.create_rectangle(despos[k],basey,despos[k] + colwidth, yval[k], fill = color2, outline = "")
+            canvas.update()
             i += 1
             k += 1
  
         while j < len(R):
             yval[k] = R[j]
+            objects[k] = R3[j]
+            canvas.delete(objects[k])    
+            objects[k] = canvas.create_rectangle(despos[k],basey,despos[k] + colwidth, yval[k], fill = color2, outline = "")
+            canvas.update()
             j += 1
             k += 1
-
+        
 
 
 def partition(yval, start, end):
