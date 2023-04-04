@@ -371,7 +371,7 @@ def export(sort_name, time_of_sort, colnum):
     
     # Open CSV file in append mode
     # Create a file object for this file
-    with open('Downloads/RunTimeError-main 8/sorting_data.csv', 'a') as f_object:
+    with open(r'sorting_data.csv', 'a') as f_object:
     
         # Pass the file object and a list
         # of column names to DictWriter()
@@ -403,7 +403,7 @@ canvas.configure(bg="white",width=Window_Width, height=Window_Height)
 canvas.pack(fill="both", expand=True)
 
 
-btn = tkinter.Button(UI_frame, text = 'Shuffle',bd = 5,command = lambda: shuff_col())
+btn = tkinter.Button(UI_frame, text = 'Shuffle',bd = 5,command = lambda: [shuff_col(), shuff_col(),shuff_col(), shuff_col(),shuff_col(), shuff_col()])
 btn.pack(side = 'left')
 
 btn = tkinter.Button(UI_frame, text = 'Bubble',bd = 5,command = lambda: Bubble())
